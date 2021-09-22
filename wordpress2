@@ -4,6 +4,66 @@ kind: Service
 
 metadata:
 
-   name: wordpress-litespeed-service-1 
+   name: wordpress-litespeed-service-2
 
 spec:
+
+   ports:
+
+     - port: 9091
+
+       targetPort: 8081
+
+   selector:
+
+     app: wordpress-litespeed-app2  
+
+---
+
+apiVersion: app/v1
+
+kind: Deployment
+
+metadata:
+
+   name: wordpress-litespeed-app2 
+
+spec:
+
+   replicas: 2
+
+   selector:
+
+     matchLabels:
+
+       app: wordpress-litespeed-app2 
+
+   template:
+
+     metadata:
+
+       labels:
+
+         app: wordpress-litespeed-app2 
+
+     spec:
+
+       containers:
+
+        - name: wordpress-litespeed-app2 
+
+          image: wordpress 
+
+          ports:
+
+           - containerPort: 8081
+
+          env:
+
+           - name: LITESPEED_HOST
+
+             value: LS-app2 
+
+           - name: LITESPEED_PORT
+
+             value: "7081"
